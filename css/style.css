@@ -24,13 +24,13 @@ img { max-width: 100%; display: block; }
 .btn-secondary { background-color: #333; color: var(--text-main); }
 
 /* =========================================
-   تصميم الهيدر الجديد (متوافق مع تطبيقات الموبايل)
+   تصميم الهيدر الجديد 
    ========================================= */
 header { 
     background-color: var(--surface-color); 
     padding: 12px var(--spacing); 
     display: flex; 
-    flex-wrap: wrap; /* يسمح بنزول شريط الروابط لسطر جديد */
+    flex-wrap: wrap; 
     align-items: center; 
     justify-content: space-between; 
     border-bottom: 1px solid #333; 
@@ -43,36 +43,38 @@ header .logo {
     color: var(--primary-color); 
 }
 
-/* زر اكتب قصتك بجوار اللوجو في الموبايل */
+/* التعديل هنا: إبراز وتكبير زر اكتب قصتك */
 header > a.btn-primary {
-    font-size: 13px;
-    padding: 6px 12px;
+    font-size: 15px; 
+    padding: 8px 24px; /* زيادة العرض */
     margin: 0;
+    border-radius: 25px; /* جعله دائرياً ليلفت الانتباه */
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4); /* ظل برتقالي متوهج */
+    font-weight: 800;
 }
 
-/* حاوية روابط الأقسام (تمرير جانبي ناعم للموبايل) */
+/* حاوية روابط الأقسام */
 header nav { 
     width: 100%;
     display: flex; 
     gap: 8px; 
     overflow-x: auto; 
     padding-bottom: 5px;
-    scrollbar-width: none; /* إخفاء شريط التمرير في فايرفوكس */
+    scrollbar-width: none; 
 }
-header nav::-webkit-scrollbar { display: none; /* إخفاء شريط التمرير في كروم */ }
+header nav::-webkit-scrollbar { display: none; }
 
-/* الروابط (أزرار ملفوفة داخل حاوية) */
+/* الروابط (أزرار ملفوفة) */
 header nav a { 
     font-size: 13px; 
     color: var(--text-main);
-    background-color: #2a2a35; /* لون الحاوية */
+    background-color: #2a2a35; 
     padding: 6px 14px; 
-    border-radius: 20px; /* شكل الحبة/الزر الملفوف */
-    white-space: nowrap; /* منع انقسام الكلمة لسطرين */
+    border-radius: 20px; 
+    white-space: nowrap; 
     border: 1px solid #444;
 }
 
-/* تمييز زر لوحة الإدارة */
 header nav a[href="admin.html"] {
     color: var(--primary-color) !important;
     background-color: rgba(255, 152, 0, 0.1);
@@ -179,8 +181,8 @@ form button { width: 100%; }
         flex-wrap: nowrap; 
     }
     header > a.btn-primary {
-        font-size: 14px;
-        padding: 10px 15px;
+        font-size: 16px;
+        padding: 10px 30px; /* تكبير الزر في اللابتوب أيضاً */
     }
     header nav { 
         width: auto;

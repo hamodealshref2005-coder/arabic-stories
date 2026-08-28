@@ -3,11 +3,16 @@ import { supabase } from './supabase-init.js';
 document.addEventListener('DOMContentLoaded', async () => {
     const loginSection = document.getElementById('login-section');
     const dashboardSection = document.getElementById('dashboard-section');
+    const editSection = document.getElementById('edit-section'); // قسم التعديل
+    
     const loginForm = document.getElementById('admin-login-form');
     const logoutBtn = document.getElementById('logout-btn');
     const loginMessage = document.getElementById('login-message');
     const storiesList = document.getElementById('admin-stories-list');
     const tabBtns = document.querySelectorAll('.tab-btn');
+    
+    const editForm = document.getElementById('edit-story-form'); // نموذج التعديل
+    const cancelEditBtn = document.getElementById('cancel-edit-btn'); // زر الإلغاء
 
     let currentStatus = 'pending';
 
@@ -69,8 +74,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             const card = document.createElement('div');
             card.className = 'story-card';
             
-            // إضافة زر "قراءة" لجميع الحالات
-            let actionButtons = `<a href="story.html?id=${story.id}" target="_blank" class="btn-secondary" style="flex: 1; padding: 5px; font-size: 12px;">قراءة</a>`;
+            // إضافة زري "قراءة" و "تعديل" لجميع القصص وفي كافة الأقسام
+            let actionButtons = `
+                <a href="story.html?id=${story.id}" target="_blank" class="btn-secondary" style="flex: 1; padding: 5px; font-size: 12px;">قراءة</a>
+                <button class="btn-primary" style="flex: 1; padding: 5px; font-size: 12px; background-color: #2196F3; color: white;" onclick="openEditStory(${story.id})">تعديل</button>
+            `;
             
             if (currentStatus === 'pending') {
                 actionButtons += `
@@ -102,6 +110,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function showDashboard() {
         loginSection.style.display = 'none';
+        editSection.style.display = 'none';
         dashboardSection.style.display = 'block';
         logoutBtn.style.display = 'inline-block';
         loadStories();
@@ -110,8 +119,67 @@ document.addEventListener('DOMContentLoaded', async () => {
     function showLogin() {
         loginSection.style.display = 'block';
         dashboardSection.style.display = 'none';
+        editSection.style.display = 'none';
         logoutBtn.style.display = 'none';
     }
+
+    // --- وظائف التعديل الجديدة ---
+
+    // 1. فتح نافذة التعديل وجلب بيانات القصة
+    window.openEditStory = async function(id) {
+        dashboardSection.style.display = 'none';
+        editSection.style.display = 'block';
+        
+        const { data, error } = await supabase.from('stories').select('*').eq('id', id).single();
+        
+        if (data) {
+            document.getElementById('edit-id').value = data.id;
+            document.getElementById('edit-title').value = data.title;
+            document.getElementById('edit-author').value = data.author_name;
+            document.getElementById('edit-category').value = data.category;
+            // النص سيعرض بأكواد الـ HTML لكي تتمكن من رؤية وتعديل رابط الـ GIF
+            document.getElementById('edit-content').value = data.content; 
+        } else {
+            alert('حدث خطأ في جلب بيانات القصة.');
+            showDashboard();
+        }
+    };
+
+    // 2. إلغاء التعديل والعودة للوحة
+    cancelEditBtn.addEventListener('click', () => {
+        showDashboard();
+    });
+
+    // 3. حفظ التعديلات وإرسالها لقاعدة البيانات
+    editForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = editForm.querySelector('button[type="submit"]');
+        submitBtn.textContent = 'جاري الحفظ...';
+        submitBtn.disabled = true;
+
+        const id = document.getElementById('edit-id').value;
+        const title = document.getElementById('edit-title').value;
+        const author = document.getElementById('edit-author').value;
+        const category = document.getElementById('edit-category').value;
+        const content = document.getElementById('edit-content').value;
+
+        const { error } = await supabase.from('stories').update({
+            title: title,
+            author_name: author,
+            category: category,
+            content: content
+        }).eq('id', id);
+
+        submitBtn.textContent = 'حفظ التعديلات';
+        submitBtn.disabled = false;
+
+        if (!error) {
+            alert('تم حفظ التعديلات بنجاح!');
+            showDashboard();
+        } else {
+            alert('حدث خطأ أثناء الحفظ.');
+        }
+    });
 
     window.updateStoryStatus = async function(id, newStatus) {
         if(!confirm('هل أنت متأكد من تغيير حالة القصة؟')) return;

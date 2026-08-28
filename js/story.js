@@ -17,9 +17,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const storyLikes = document.getElementById('story-likes');
     const storyContent = document.getElementById('story-content');
     const likeBtn = document.getElementById('like-btn');
+    const shareBtn = document.getElementById('share-btn');
     const storyMeta = document.getElementById('story-meta');
 
-    // تم إزالة شرط eq('status', 'published') للسماح للأدمن بقراءة القصص المعلقة
     const { data, error } = await supabase
         .from('stories')
         .select('*')
@@ -38,9 +38,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     storyCategory.textContent = data.category;
     storyContent.innerHTML = data.content;
     storyImage.src = data.image_url;
+    
+    // إظهار العناصر بعد الجلب
     storyImage.style.display = 'block';
     storyMeta.style.display = 'flex';
     likeBtn.style.display = 'inline-block';
+    shareBtn.style.display = 'inline-block';
 
     let currentViews = data.views;
     let currentLikes = data.likes;
@@ -48,6 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     storyViews.textContent = `👁️ ${currentViews}`;
     storyLikes.textContent = `❤️ ${currentLikes}`;
 
+    // نظام المشاهدات
     const viewKey = `viewed_story_${storyId}`;
     if (!localStorage.getItem(viewKey)) {
         await supabase.rpc('increment_views', { story_id: storyId });
@@ -56,6 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         storyViews.textContent = `👁️ ${currentViews}`;
     }
 
+    // نظام الإعجابات
     const likeKey = `liked_story_${storyId}`;
     if (localStorage.getItem(likeKey)) {
         likeBtn.disabled = true;
@@ -65,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
         likeBtn.addEventListener('click', async () => {
             likeBtn.disabled = true;
-            likeBtn.textContent = 'جاري الإرسال...';
+            likeBtn.textContent = 'جاري...';
             const { error: likeError } = await supabase.rpc('increment_likes', { story_id: storyId });
             if (!likeError) {
                 localStorage.setItem(likeKey, 'true');
@@ -81,4 +86,30 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     }
+
+    // برمجة زر المشاركة
+    shareBtn.addEventListener('click', async () => {
+        const shareData = {
+            title: data.title,
+            text: `اقرأ قصة "${data.title}" للكاتب ${data.author_name} على منصة القصص العربية!`,
+            url: window.location.href
+        };
+
+        if (navigator.share) {
+            try {
+                // استدعاء نافذة المشاركة الأصلية للهاتف
+                await navigator.share(shareData);
+            } catch (err) {
+                console.log('تم إلغاء المشاركة');
+            }
+        } else {
+            // بديل للأجهزة التي لا تدعم الميزة (نسخ الرابط)
+            try {
+                await navigator.clipboard.writeText(window.location.href);
+                alert('تم نسخ رابط القصة! يمكنك الآن لصقه ومشاركته.');
+            } catch (err) {
+                alert('حدث خطأ أثناء نسخ الرابط.');
+            }
+        }
+    });
 });

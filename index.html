@@ -4,34 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة القصص العربية</title>
-    <!-- هذا الرابط لملف التصميم الذي سننشئه في الخطوة القادمة -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- الهيدر (القائمة العلوية) -->
     <header>
         <div class="logo">منصة القصص</div>
         <nav>
             <a href="index.html">الرئيسية</a>
             <a href="#latest">أحدث القصص</a>
-            <a href="#categories">التصنيفات</a>
-            <a href="#trending">المتصدرين</a>
+            <a href="#most-viewed">الأكثر مشاهدة</a>
         </nav>
         <a href="create.html" class="btn-primary">اكتب قصتك</a>
     </header>
 
     <!-- قسم القصة المميزة -->
     <section id="featured">
-        <div class="featured-card">
-            <!-- استخدمنا صور مؤقتة حتى نربط الموقع بـ Supabase لاحقاً -->
-            <img src="https://via.placeholder.com/800x400/222/fff?text=صورة+القصة+المميزة" alt="صورة القصة المميزة" class="featured-img">
-            <div class="featured-content">
-                <h2>عنوان القصة المميزة هنا</h2>
-                <p>هذا النص هو وصف قصير للقصة المميزة، لجذب القارئ لقراءتها بالكامل...</p>
-                <a href="story.html?id=1" class="btn-secondary">اقرأ الآن</a>
-            </div>
-        </div>
+        <p style="text-align: center;">جاري تحميل القصة المميزة...</p>
     </section>
 
     <!-- قسم الأكثر مشاهدة -->
@@ -40,33 +29,7 @@
             <h2>الأكثر مشاهدة</h2>
         </div>
         <div class="stories-grid">
-            <!-- بطاقة قصة تجريبية (سيتم توليدها تلقائياً بالبرمجة لاحقاً) -->
-            <div class="story-card">
-                <img src="https://via.placeholder.com/300x200/333/fff?text=غلاف+القصة" alt="غلاف القصة">
-                <div class="story-info">
-                    <span class="category">رعب</span>
-                    <h3>المنزل المهجور</h3>
-                    <span class="author">بواسطة: أحمد</span>
-                    <div class="stats">
-                        <span>👁️ 1500</span>
-                        <span>❤️ 300</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- بطاقة قصة تجريبية أخرى -->
-            <div class="story-card">
-                <img src="https://via.placeholder.com/300x200/333/fff?text=غلاف+القصة" alt="غلاف القصة">
-                <div class="story-info">
-                    <span class="category">خيال علمي</span>
-                    <h3>الرحلة الأخيرة</h3>
-                    <span class="author">بواسطة: محمد</span>
-                    <div class="stats">
-                        <span>👁️ 1200</span>
-                        <span>❤️ 250</span>
-                    </div>
-                </div>
-            </div>
+            <p>جاري تحميل القصص...</p>
         </div>
     </section>
 
@@ -76,22 +39,11 @@
             <h2>أحدث القصص</h2>
         </div>
         <div class="stories-grid">
-            <div class="story-card">
-                <img src="https://via.placeholder.com/300x200/333/fff?text=غلاف+القصة" alt="غلاف القصة">
-                <div class="story-info">
-                    <span class="category">دراما</span>
-                    <h3>رسالة لم تصل</h3>
-                    <span class="author">بواسطة: سارة</span>
-                    <div class="stats">
-                        <span>👁️ 50</span>
-                        <span>❤️ 10</span>
-                    </div>
-                </div>
-            </div>
+            <p>جاري تحميل القصص...</p>
         </div>
     </section>
 
-    <!-- هذا الرابط لملف الجافاسكربت الذي سننشئه في مراحل متقدمة -->
-    <script src="js/home.js"></script>
+    <!-- تم إضافة type="module" -->
+    <script type="module" src="js/home.js"></script>
 </body>
 </html>

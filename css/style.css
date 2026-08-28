@@ -126,3 +126,8 @@ form button { width: 100%; }
     
     .story-header-info h1 { font-size: 30px; }
 }
+/* كود توسيع الشبكة عند الضغط على زر عرض الكل */
+.expanded-grid {
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+}

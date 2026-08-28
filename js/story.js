@@ -19,15 +19,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const likeBtn = document.getElementById('like-btn');
     const storyMeta = document.getElementById('story-meta');
 
+    // تم إزالة شرط eq('status', 'published') للسماح للأدمن بقراءة القصص المعلقة
     const { data, error } = await supabase
         .from('stories')
         .select('*')
         .eq('id', storyId)
-        .eq('status', 'published')
         .single(); 
 
     if (error || !data) {
-        storyTitle.textContent = 'القصة غير موجودة أو تم حذفها.';
+        storyTitle.textContent = 'القصة غير موجودة أو قيد المراجعة.';
         storyContent.innerHTML = '';
         return;
     }
@@ -36,10 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     storyTitle.textContent = data.title;
     storyAuthor.textContent = `الكاتب: ${data.author_name}`;
     storyCategory.textContent = data.category;
-    
-    // التعديل المهم هنا: استخدام innerHTML بدلاً من textContent لترجمة الصور المتحركة
     storyContent.innerHTML = data.content;
-    
     storyImage.src = data.image_url;
     storyImage.style.display = 'block';
     storyMeta.style.display = 'flex';
@@ -69,9 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         likeBtn.addEventListener('click', async () => {
             likeBtn.disabled = true;
             likeBtn.textContent = 'جاري الإرسال...';
-            
             const { error: likeError } = await supabase.rpc('increment_likes', { story_id: storyId });
-            
             if (!likeError) {
                 localStorage.setItem(likeKey, 'true');
                 currentLikes++;

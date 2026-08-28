@@ -3,7 +3,7 @@ import { supabase } from './supabase-init.js';
 document.addEventListener('DOMContentLoaded', async () => {
     const loginSection = document.getElementById('login-section');
     const dashboardSection = document.getElementById('dashboard-section');
-    const editSection = document.getElementById('edit-section'); // قسم التعديل
+    const editSection = document.getElementById('edit-section');
     
     const loginForm = document.getElementById('admin-login-form');
     const logoutBtn = document.getElementById('logout-btn');
@@ -11,8 +11,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const storiesList = document.getElementById('admin-stories-list');
     const tabBtns = document.querySelectorAll('.tab-btn');
     
-    const editForm = document.getElementById('edit-story-form'); // نموذج التعديل
-    const cancelEditBtn = document.getElementById('cancel-edit-btn'); // زر الإلغاء
+    const editForm = document.getElementById('edit-story-form');
+    const cancelEditBtn = document.getElementById('cancel-edit-btn');
+    const editContentBlocks = document.getElementById('edit-content-blocks');
+    
+    const addTextBtn = document.getElementById('admin-add-text-btn');
+    const addGifBtn = document.getElementById('admin-add-gif-btn');
 
     let currentStatus = 'pending';
 
@@ -74,7 +78,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const card = document.createElement('div');
             card.className = 'story-card';
             
-            // إضافة زري "قراءة" و "تعديل" لجميع القصص وفي كافة الأقسام
             let actionButtons = `
                 <a href="story.html?id=${story.id}" target="_blank" class="btn-secondary" style="flex: 1; padding: 5px; font-size: 12px;">قراءة</a>
                 <button class="btn-primary" style="flex: 1; padding: 5px; font-size: 12px; background-color: #2196F3; color: white;" onclick="openEditStory(${story.id})">تعديل</button>
@@ -123,12 +126,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         logoutBtn.style.display = 'none';
     }
 
-    // --- وظائف التعديل الجديدة ---
-
-    // 1. فتح نافذة التعديل وجلب بيانات القصة
+    // --- تفكيك القصة عند فتح التعديل ---
     window.openEditStory = async function(id) {
         dashboardSection.style.display = 'none';
         editSection.style.display = 'block';
+        editContentBlocks.innerHTML = ''; // تفريغ الحاويات القديمة
         
         const { data, error } = await supabase.from('stories').select('*').eq('id', id).single();
         
@@ -137,20 +139,68 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('edit-title').value = data.title;
             document.getElementById('edit-author').value = data.author_name;
             document.getElementById('edit-category').value = data.category;
-            // النص سيعرض بأكواد الـ HTML لكي تتمكن من رؤية وتعديل رابط الـ GIF
-            document.getElementById('edit-content').value = data.content; 
+            
+            // تحويل النص المخزن (HTML) إلى عناصر مؤقتة لتفكيكها
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = data.content;
+            
+            Array.from(tempDiv.children).forEach(child => {
+                if (child.tagName === 'P') {
+                    // إنشاء حاوية نص
+                    const textArea = document.createElement('textarea');
+                    textArea.className = 'story-block text-block';
+                    textArea.rows = 4;
+                    // إرجاع الفواصل السطرية
+                    textArea.value = child.innerHTML.replace(/<br\s*[\/]?>/gi, '\n');
+                    textArea.style.cssText = 'width: 100%; padding: 12px; margin-bottom: 10px; background-color: var(--bg-color); border: 1px solid #333; color: white; border-radius: 8px; outline: none;';
+                    editContentBlocks.appendChild(textArea);
+                } else if (child.tagName === 'IMG') {
+                    // إنشاء حاوية رابط GIF
+                    const input = document.createElement('input');
+                    input.type = 'url';
+                    input.className = 'story-block gif-block';
+                    input.value = child.src;
+                    input.style.cssText = 'width: 100%; padding: 12px; margin-bottom: 10px; background-color: var(--bg-color); border: 1px solid #ff9800; color: white; border-radius: 8px; direction: ltr; text-align: left; outline: none;';
+                    editContentBlocks.appendChild(input);
+                }
+            });
+            
+            // إضافة مربع نص فارغ إذا كانت القصة فارغة
+            if (editContentBlocks.innerHTML === '') addTextBlock();
+
         } else {
             alert('حدث خطأ في جلب بيانات القصة.');
             showDashboard();
         }
     };
 
-    // 2. إلغاء التعديل والعودة للوحة
+    // دوال إضافة حاويات جديدة أثناء التعديل
+    function addTextBlock() {
+        const textArea = document.createElement('textarea');
+        textArea.className = 'story-block text-block';
+        textArea.rows = 4;
+        textArea.placeholder = 'اكتب فقرة إضافية هنا...';
+        textArea.style.cssText = 'width: 100%; padding: 12px; margin-bottom: 10px; background-color: var(--bg-color); border: 1px solid #333; color: white; border-radius: 8px; outline: none;';
+        editContentBlocks.appendChild(textArea);
+    }
+
+    function addGifBlock() {
+        const input = document.createElement('input');
+        input.type = 'url';
+        input.className = 'story-block gif-block';
+        input.placeholder = 'رابط الصورة المتحركة (GIF)...';
+        input.style.cssText = 'width: 100%; padding: 12px; margin-bottom: 10px; background-color: var(--bg-color); border: 1px solid #ff9800; color: white; border-radius: 8px; direction: ltr; text-align: left; outline: none;';
+        editContentBlocks.appendChild(input);
+    }
+
+    addTextBtn.addEventListener('click', addTextBlock);
+    addGifBtn.addEventListener('click', addGifBlock);
+
     cancelEditBtn.addEventListener('click', () => {
         showDashboard();
     });
 
-    // 3. حفظ التعديلات وإرسالها لقاعدة البيانات
+    // --- إعادة تجميع القصة عند الحفظ ---
     editForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const submitBtn = editForm.querySelector('button[type="submit"]');
@@ -161,16 +211,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         const title = document.getElementById('edit-title').value;
         const author = document.getElementById('edit-author').value;
         const category = document.getElementById('edit-category').value;
-        const content = document.getElementById('edit-content').value;
+        
+        let finalContent = '';
+        const blocks = editContentBlocks.querySelectorAll('.story-block');
+        
+        blocks.forEach(block => {
+            if (block.classList.contains('text-block') && block.value.trim() !== '') {
+                finalContent += `<p style="margin-bottom: 20px;">${block.value.replace(/\n/g, '<br>')}</p>`;
+            } else if (block.classList.contains('gif-block') && block.value.trim() !== '') {
+                finalContent += `<img src="${block.value.trim()}" alt="صورة متحركة" style="max-width: 100%; border-radius: 12px; margin: 20px auto; display: block;">`;
+            }
+        });
 
         const { error } = await supabase.from('stories').update({
             title: title,
             author_name: author,
             category: category,
-            content: content
+            content: finalContent
         }).eq('id', id);
 
-        submitBtn.textContent = 'حفظ التعديلات';
+        submitBtn.textContent = 'حفظ التعديلات والنشر';
         submitBtn.disabled = false;
 
         if (!error) {

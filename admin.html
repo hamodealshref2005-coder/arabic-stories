@@ -11,13 +11,11 @@
         <div class="logo">لوحة الإدارة</div>
         <nav>
             <a href="index.html">الرئيسية</a>
-            <!-- زر تسجيل الخروج سيكون مخفياً حتى يسجل الأدمن دخوله -->
             <button id="logout-btn" class="btn-secondary" style="display: none;">تسجيل الخروج</button>
         </nav>
     </header>
 
     <main class="container admin-container">
-        <!-- قسم تسجيل الدخول للأدمن فقط -->
         <div id="login-section" class="form-container">
             <h2>تسجيل دخول الأدمن</h2>
             <form id="admin-login-form">
@@ -34,24 +32,19 @@
             <div id="login-message"></div>
         </div>
 
-        <!-- قسم لوحة التحكم (مخفي حتى يتم تسجيل الدخول) -->
         <div id="dashboard-section" style="display: none;">
-            <!-- أزرار التنقل بين حالات القصص -->
             <div class="admin-tabs">
-                <button class="tab-btn active" id="tab-pending">قيد المراجعة</button>
-                <button class="tab-btn" id="tab-published">المنشورة</button>
-                <button class="tab-btn" id="tab-rejected">المرفوضة</button>
+                <button class="tab-btn active" data-status="pending">قيد المراجعة</button>
+                <button class="tab-btn" data-status="published">المنشورة</button>
+                <button class="tab-btn" data-status="rejected">المرفوضة</button>
             </div>
 
-            <!-- حاوية عرض القصص -->
             <div id="admin-stories-list" class="admin-stories-grid">
-                <p>جاري تحميل القصص...</p>
-                <!-- سيتم وضع كروت القصص هنا عن طريق الجافاسكربت مع أزرار (قبول - رفض - حذف) -->
+                <!-- سيتم حقن القصص هنا -->
             </div>
         </div>
     </main>
 
-    <!-- سيتم إنشاء هذا الملف لاحقاً -->
-    <script src="js/admin.js"></script>
+    <script type="module" src="js/admin.js"></script>
 </body>
 </html>

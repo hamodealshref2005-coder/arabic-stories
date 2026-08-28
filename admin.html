@@ -40,14 +40,13 @@
                 <button class="tab-btn" data-status="published">المنشورة</button>
                 <button class="tab-btn" data-status="rejected">المرفوضة</button>
             </div>
-
             <div id="admin-stories-list" class="admin-stories-grid">
-                <!-- سيتم حقن القصص هنا -->
+                <!-- القصص تظهر هنا -->
             </div>
         </div>
 
-        <!-- قسم تعديل القصة (مخفي افتراضياً) -->
-        <div id="edit-section" class="form-container" style="display: none;">
+        <!-- قسم تعديل القصة -->
+        <div id="edit-section" class="form-container" style="display: none; max-width: 800px;">
             <h2 style="margin-bottom: 20px; text-align: center;">تعديل بيانات القصة</h2>
             <form id="edit-story-form">
                 <input type="hidden" id="edit-id">
@@ -75,15 +74,20 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="edit-content">نص القصة (مع روابط الصور):</label>
-                    <!-- تم جعل اتجاه النص من اليسار لليمين لتسهيل قراءة روابط الصور وأكواد الـ HTML -->
-                    <textarea id="edit-content" rows="15" required style="direction: ltr; text-align: left; background-color: #111; font-family: monospace;"></textarea>
-                    <small style="color: #ff9800;">ملاحظة: النص هنا يظهر بصيغة HTML (ستجد روابط الصور بداخل وسم `<img>`). يمكنك استبدال الرابط المتعطل برابط جديد مباشرة.</small>
+                    <label>نص القصة (مقسم لتسهيل التعديل):</label>
+                    <!-- الحاويات المفصولة ستظهر هنا -->
+                    <div id="edit-content-blocks"></div>
+                    
+                    <!-- أزرار لإضافة المزيد أثناء التعديل -->
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <button type="button" class="btn-secondary" id="admin-add-text-btn">+ إضافة فقرة نص</button>
+                        <button type="button" class="btn-secondary" id="admin-add-gif-btn" style="border: 1px solid #ff9800; color: #ff9800; background: transparent;">+ إضافة رابط (GIF)</button>
+                    </div>
                 </div>
                 
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <div style="display: flex; gap: 10px; margin-top: 30px;">
                     <button type="button" class="btn-secondary" id="cancel-edit-btn" style="flex: 1;">إلغاء التعديل</button>
-                    <button type="submit" class="btn-primary" style="flex: 2;">حفظ التعديلات</button>
+                    <button type="submit" class="btn-primary" style="flex: 2;">حفظ التعديلات والنشر</button>
                 </div>
             </form>
         </div>

@@ -16,30 +16,28 @@
     </header>
 
     <main class="container story-page">
-        <!-- صورة الغلاف -->
-        <img src="https://via.placeholder.com/1200x500/222/fff?text=جاري+تحميل+الصورة..." alt="غلاف القصة" id="story-image" class="story-cover-img">
+        <!-- الصورة مخفية افتراضياً حتى يتم جلبها -->
+        <img src="" alt="غلاف القصة" id="story-image" class="story-cover-img" style="display: none;">
         
-        <!-- عنوان وتفاصيل القصة -->
         <div class="story-header-info">
             <h1 id="story-title">جاري تحميل القصة...</h1>
-            <div class="story-meta">
-                <span class="author" id="story-author">الكاتب: ...</span>
-                <span class="category" id="story-category">...</span>
+            <!-- التفاصيل مخفية افتراضياً -->
+            <div class="story-meta" id="story-meta" style="display: none;">
+                <span class="author" id="story-author"></span>
+                <span class="category" id="story-category"></span>
                 <div class="stats">
                     <span id="story-views">👁️ 0</span>
                     <span id="story-likes">❤️ 0</span>
                 </div>
             </div>
-            <button id="like-btn" class="btn-secondary">أعجبتني ❤️</button>
+            <button id="like-btn" class="btn-secondary" style="display: none;">أعجبتني ❤️</button>
         </div>
 
-        <!-- محتوى القصة -->
         <div class="story-content" id="story-content">
-            <p>الرجاء الانتظار، يتم جلب تفاصيل القصة من قاعدة البيانات...</p>
+            <p>الرجاء الانتظار، يتم جلب تفاصيل القصة...</p>
         </div>
     </main>
 
-    <!-- سيتم إنشاء هذا الملف لاحقاً -->
-    <script src="js/story.js"></script>
+    <script type="module" src="js/story.js"></script>
 </body>
 </html>

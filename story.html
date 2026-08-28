@@ -16,12 +16,10 @@
     </header>
 
     <main class="container story-page">
-        <!-- الصورة مخفية افتراضياً حتى يتم جلبها -->
         <img src="" alt="غلاف القصة" id="story-image" class="story-cover-img" style="display: none;">
         
         <div class="story-header-info">
             <h1 id="story-title">جاري تحميل القصة...</h1>
-            <!-- التفاصيل مخفية افتراضياً -->
             <div class="story-meta" id="story-meta" style="display: none;">
                 <span class="author" id="story-author"></span>
                 <span class="category" id="story-category"></span>
@@ -30,7 +28,12 @@
                     <span id="story-likes">❤️ 0</span>
                 </div>
             </div>
-            <button id="like-btn" class="btn-secondary" style="display: none;">أعجبتني ❤️</button>
+            
+            <!-- أزرار التفاعل (مشاركة وإعجاب) -->
+            <div id="action-buttons" style="display: flex; gap: 10px; justify-content: center; margin-top: 15px;">
+                <button id="like-btn" class="btn-secondary" style="display: none;">أعجبتني ❤️</button>
+                <button id="share-btn" class="btn-primary" style="display: none;">مشاركة 📤</button>
+            </div>
         </div>
 
         <div class="story-content" id="story-content">

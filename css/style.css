@@ -128,6 +128,21 @@ form button { width: 100%; }
 }
 /* كود توسيع الشبكة عند الضغط على زر عرض الكل */
 .expanded-grid {
-    flex-wrap: wrap !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
     overflow-x: visible !important;
+    gap: 15px;
+}
+
+/* إعادة ضبط حجم البطاقة لتملا العمود بالكامل بدون مشاكل */
+.expanded-grid .story-card {
+    width: 100% !important;
+    flex: unset !important;
+}
+
+/* الحفاظ على التنسيق في اللابتوب (3 أعمدة) */
+@media (min-width: 768px) {
+    .expanded-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
 }

@@ -23,22 +23,72 @@ img { max-width: 100%; display: block; }
 .btn-primary { background-color: var(--primary-color); color: #000; }
 .btn-secondary { background-color: #333; color: var(--text-main); }
 
-header { background-color: var(--surface-color); padding: 15px var(--spacing); display: flex; flex-direction: column; align-items: center; gap: 15px; border-bottom: 1px solid #333; }
-header .logo { font-size: 24px; font-weight: 800; color: var(--primary-color); }
-header nav { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
-header nav a { font-size: 15px; color: var(--text-muted); }
+/* =========================================
+   تصميم الهيدر الجديد (متوافق مع تطبيقات الموبايل)
+   ========================================= */
+header { 
+    background-color: var(--surface-color); 
+    padding: 12px var(--spacing); 
+    display: flex; 
+    flex-wrap: wrap; /* يسمح بنزول شريط الروابط لسطر جديد */
+    align-items: center; 
+    justify-content: space-between; 
+    border-bottom: 1px solid #333; 
+    gap: 12px;
+}
+
+header .logo { 
+    font-size: 20px; 
+    font-weight: 800; 
+    color: var(--primary-color); 
+}
+
+/* زر اكتب قصتك بجوار اللوجو في الموبايل */
+header > a.btn-primary {
+    font-size: 13px;
+    padding: 6px 12px;
+    margin: 0;
+}
+
+/* حاوية روابط الأقسام (تمرير جانبي ناعم للموبايل) */
+header nav { 
+    width: 100%;
+    display: flex; 
+    gap: 8px; 
+    overflow-x: auto; 
+    padding-bottom: 5px;
+    scrollbar-width: none; /* إخفاء شريط التمرير في فايرفوكس */
+}
+header nav::-webkit-scrollbar { display: none; /* إخفاء شريط التمرير في كروم */ }
+
+/* الروابط (أزرار ملفوفة داخل حاوية) */
+header nav a { 
+    font-size: 13px; 
+    color: var(--text-main);
+    background-color: #2a2a35; /* لون الحاوية */
+    padding: 6px 14px; 
+    border-radius: 20px; /* شكل الحبة/الزر الملفوف */
+    white-space: nowrap; /* منع انقسام الكلمة لسطرين */
+    border: 1px solid #444;
+}
+
+/* تمييز زر لوحة الإدارة */
+header nav a[href="admin.html"] {
+    color: var(--primary-color) !important;
+    background-color: rgba(255, 152, 0, 0.1);
+    border-color: var(--primary-color);
+}
 
 section { padding: 30px var(--spacing); max-width: 1200px; margin: 0 auto; }
 .section-header { margin-bottom: 20px; border-right: 4px solid var(--primary-color); padding-right: 10px; }
 .section-header h2 { font-size: 20px; }
 
 /* =========================================
-   1. التمرير الجانبي (الأكثر مشاهدة والأحدث)
-   يظهر بطاقتين فقط في شاشة الموبايل
+   التمرير الجانبي (الأكثر مشاهدة والأحدث)
    ========================================= */
 .stories-grid {
     display: flex;
-    flex-wrap: nowrap; /* إجبار البطاقات على البقاء في سطر أفقي واحد */
+    flex-wrap: nowrap; 
     overflow-x: auto;
     gap: 15px;
     padding-bottom: 15px;
@@ -48,7 +98,6 @@ section { padding: 30px var(--spacing); max-width: 1200px; margin: 0 auto; }
 .stories-grid::-webkit-scrollbar-thumb { background-color: var(--primary-color); border-radius: 10px; }
 
 .stories-grid .story-card {
-    /* عرض البطاقة ليكون نصف الشاشة تقريباً (لتظهر بطاقتين فقط) */
     flex: 0 0 calc(50% - 10px); 
     scroll-snap-align: start;
     background-color: var(--surface-color);
@@ -60,7 +109,7 @@ section { padding: 30px var(--spacing); max-width: 1200px; margin: 0 auto; }
 .stories-grid .story-card img { height: 140px; object-fit: cover; }
 
 /* =========================================
-   2. كل القصص + لوحة الأدمن (تحت بعض / بطاقات كبيرة)
+   كل القصص + لوحة الأدمن 
    ========================================= */
 .stories-feed, .admin-stories-grid {
     display: flex;
@@ -77,7 +126,7 @@ section { padding: 30px var(--spacing); max-width: 1200px; margin: 0 auto; }
     flex-direction: column;
 }
 .stories-feed .story-card img, .admin-stories-grid .story-card img {
-    height: 250px; /* صورة كبيرة وواضحة جداً للموبايل */
+    height: 250px; 
     object-fit: cover;
 }
 
@@ -88,7 +137,7 @@ section { padding: 30px var(--spacing); max-width: 1200px; margin: 0 auto; }
 .author { font-size: 13px; color: var(--text-muted); margin-bottom: 15px; }
 .stats { display: flex; gap: 15px; margin-top: auto; font-size: 13px; color: var(--text-muted); border-top: 1px solid #333; padding-top: 10px; }
 
-/* باقي الصفحات (صفحة القصة، لوحة الأدمن الأساسية، صفحة الكتابة) */
+/* باقي الصفحات */
 .story-page { max-width: 800px; margin-top: 20px; }
 .story-cover-img { width: 100%; height: 250px; object-fit: cover; border-radius: var(--border-radius); margin-bottom: 20px; }
 .story-header-info { text-align: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid #333; }
@@ -112,20 +161,6 @@ form button { width: 100%; }
 .btn-reject { background-color: #f44336; color: white; }
 .btn-delete { background-color: #9e9e9e; color: white; }
 
-/* الشاشات الكبيرة (لابتوب) */
-@media (min-width: 768px) {
-    header { flex-direction: row; justify-content: space-between; }
-    
-    /* في اللابتوب نلغي التمرير ونعرضها كشبكة */
-    .stories-grid { display: grid; grid-template-columns: repeat(3, 1fr); overflow-x: visible; }
-    .stories-grid .story-card { flex: auto; min-width: auto; }
-    
-    /* عرض "كل القصص" ولوحة الأدمن في اللابتوب كشبكة 3 أعمدة (بدلاً من بطاقة واحدة ضخمة) */
-    .stories-feed, .admin-stories-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
-    .stories-feed .story-card img, .admin-stories-grid .story-card img { height: 200px; }
-    
-    .story-header-info h1 { font-size: 30px; }
-}
 /* كود توسيع الشبكة عند الضغط على زر عرض الكل */
 .expanded-grid {
     display: grid !important;
@@ -133,15 +168,36 @@ form button { width: 100%; }
     overflow-x: visible !important;
     gap: 15px;
 }
-
-/* إعادة ضبط حجم البطاقة لتملا العمود بالكامل بدون مشاكل */
 .expanded-grid .story-card {
     width: 100% !important;
     flex: unset !important;
 }
 
-/* الحفاظ على التنسيق في اللابتوب (3 أعمدة) */
+/* الشاشات الكبيرة (لابتوب) */
 @media (min-width: 768px) {
+    header { 
+        flex-wrap: nowrap; 
+    }
+    header > a.btn-primary {
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+    header nav { 
+        width: auto;
+        overflow-x: visible; 
+    }
+    header nav a {
+        font-size: 14px;
+    }
+    
+    .stories-grid { display: grid; grid-template-columns: repeat(3, 1fr); overflow-x: visible; }
+    .stories-grid .story-card { flex: auto; min-width: auto; }
+    
+    .stories-feed, .admin-stories-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+    .stories-feed .story-card img, .admin-stories-grid .story-card img { height: 200px; }
+    
+    .story-header-info h1 { font-size: 30px; }
+
     .expanded-grid {
         grid-template-columns: repeat(3, 1fr) !important;
     }

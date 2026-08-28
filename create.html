@@ -16,50 +16,72 @@
 
     <main class="container form-container">
         <h1>اكتب قصتك وشاركها مع العالم</h1>
-        <p class="form-subtitle">لن يتم نشر القصة حتى تتم مراجعتها من قبل الإدارة.</p>
         
         <form id="create-story-form">
-            <div class="form-group">
-                <label for="title">عنوان القصة:</label>
-                <input type="text" id="title" placeholder="اكتب عنواناً جذاباً" required>
+            <!-- الجزء الأول: البيانات الأساسية -->
+            <div id="step-1">
+                <div class="form-group">
+                    <label for="title">عنوان القصة:</label>
+                    <input type="text" id="title" placeholder="اكتب عنواناً جذاباً" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="author">اسم الكاتب:</label>
+                    <input type="text" id="author" placeholder="اسمك أو اسم مستعار" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">التصنيف:</label>
+                    <select id="category" required>
+                        <option value="" disabled selected>اختر التصنيف المناسب</option>
+                        <option value="رعب">رعب</option>
+                        <option value="دراما">دراما</option>
+                        <option value="خيال علمي">خيال علمي</option>
+                        <option value="رومانسي">رومانسي</option>
+                        <option value="تاريخي">تاريخي</option>
+                        <option value="غموض">غموض</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="image">صورة الغلاف:</label>
+                    <input type="file" id="image" accept="image/png, image/jpeg, image/jpg" required>
+                    <small>اختر صورة واضحة تعبر عن قصتك (يفضل أن تكون عرضية).</small>
+                </div>
+                
+                <button type="button" class="btn-primary" id="next-btn">التالي (كتابة القصة)</button>
             </div>
-            
-            <div class="form-group">
-                <label for="author">اسم الكاتب:</label>
-                <input type="text" id="author" placeholder="اسمك أو اسم مستعار" required>
+
+            <!-- الجزء الثاني: نص القصة والصور المتحركة -->
+            <div id="step-2" style="display: none;">
+                <div class="form-group">
+                    <label>نص القصة:</label>
+                    <!-- هذه الحاوية سيتم إضافة النصوص وروابط الصور بداخلها -->
+                    <div id="content-blocks">
+                        <textarea class="story-block text-block" rows="6" placeholder="اكتب الجزء الأول من قصتك هنا..."></textarea>
+                    </div>
+                    
+                    <!-- زر إضافة الصورة المتحركة -->
+                    <button type="button" class="btn-secondary" id="add-gif-btn" style="margin-top: 15px; width: auto;">+ إضافة صورة متحركة (رابط)</button>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 25px;">
+                    <button type="button" class="btn-secondary" id="prev-btn" style="flex: 1;">السابق</button>
+                    <button type="submit" class="btn-primary" id="submit-btn" style="flex: 2;">إرسال القصة للمراجعة</button>
+                </div>
             </div>
-            
-            <div class="form-group">
-                <label for="category">التصنيف:</label>
-                <select id="category" required>
-                    <option value="" disabled selected>اختر التصنيف المناسب</option>
-                    <option value="رعب">رعب</option>
-                    <option value="دراما">دراما</option>
-                    <option value="خيال علمي">خيال علمي</option>
-                    <option value="رومانسي">رومانسي</option>
-                    <option value="تاريخي">تاريخي</option>
-                    <option value="غموض">غموض</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="image">صورة الغلاف:</label>
-                <input type="file" id="image" accept="image/png, image/jpeg, image/jpg" required>
-                <small>اختر صورة واضحة تعبر عن قصتك (يفضل أن تكون عرضية).</small>
-            </div>
-            
-            <div class="form-group">
-                <label for="content">نص القصة:</label>
-                <textarea id="content" rows="15" placeholder="اكتب أحداث قصتك هنا..." required></textarea>
-            </div>
-            
-            <button type="submit" class="btn-primary" id="submit-btn">إرسال القصة للمراجعة</button>
         </form>
-        
-        <div id="message-box"></div>
     </main>
 
-    <!-- تم التعديل هنا: إضافة type="module" -->
+    <!-- شاشة النجاح المنبثقة (مخفية افتراضياً) -->
+    <div id="success-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center;">
+        <div style="background: var(--surface-color); padding: 40px; border-radius: 12px; text-align: center; border: 2px solid var(--primary-color);">
+            <h2 style="color: var(--primary-color); margin-bottom: 15px;">تم الإرسال بنجاح!</h2>
+            <p style="font-size: 18px;">تم إرسال القصة في انتظار المراجعة...</p>
+            <p style="font-size: 14px; color: var(--text-muted); margin-top: 10px;">جاري تحويلك للصفحة الرئيسية...</p>
+        </div>
+    </div>
+
     <script type="module" src="js/create.js"></script>
 </body>
 </html>
